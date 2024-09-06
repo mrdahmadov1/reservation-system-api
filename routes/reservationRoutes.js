@@ -6,6 +6,12 @@ const router = express.Router({ mergeParams: true });
 
 router.use(authController.protect);
 
+router.get(
+  '/myReservations',
+  authController.restrictTo('user'),
+  reservationController.getMyReservations
+);
+
 router
   .route('/')
   .get(reservationController.getAllReservation)
@@ -18,7 +24,6 @@ router
 router
   .route('/:id')
   .get(reservationController.getReservation)
-  .patch(authController.restrictTo('admin'), reservationController.updateReservation)
   .delete(authController.restrictTo('user', 'admin'), reservationController.deleteReservation);
 
 module.exports = router;

@@ -8,8 +8,13 @@ exports.setVenueUserIds = (req, res, next) => {
   next();
 };
 
+exports.getMyReservations = (req, res, next) => {
+  // Dynamically build the filter and call the factory function
+  req.query.user = req.user._id;
+  factory.getAll(Reservation)(req, res, next);
+};
+
 exports.getAllReservation = factory.getAll(Reservation);
 exports.getReservation = factory.getOne(Reservation);
 exports.createReservation = factory.createOne(Reservation);
-exports.updateReservation = factory.updateOne(Reservation);
 exports.deleteReservation = factory.deleteOne(Reservation);

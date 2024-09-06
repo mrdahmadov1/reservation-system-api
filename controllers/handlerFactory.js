@@ -59,16 +59,25 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, additionalFilter = {}) =>
   catchAsync(async (req, res, next) => {
+    // Build filter for nested routes and additional filters like user-specific data
     let filter = {};
     if (req.params.venueId) filter = { venue: req.params.venueId };
+
+    // Merge additionalFilter into the main filter
+    if (typeof additionalFilter === 'function') {
+      filter = { ...filter, ...additionalFilter(req) };
+    } else {
+      filter = { ...filter, ...additionalFilter };
+    }
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
+
     const doc = await features.query;
 
     res.status(200).json({
