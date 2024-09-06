@@ -63,7 +63,8 @@ exports.getAll = (Model, additionalFilter = {}) =>
   catchAsync(async (req, res, next) => {
     // Build filter for nested routes and additional filters like user-specific data
     let filter = {};
-    if (req.params.venueId) filter = { venue: req.params.venueId };
+    if (req.params.venueId) filter.vanue = req.params.venueId;
+    if (req.params.reservationId) filter.reservation = req.params.reservationId;
 
     // Merge additionalFilter into the main filter
     if (typeof additionalFilter === 'function') {
