@@ -29,9 +29,7 @@ exports.updateOne = (Model) =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
 
@@ -41,9 +39,7 @@ exports.createOne = (Model) =>
 
     res.status(201).json({
       status: 'success',
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
 
@@ -59,15 +55,14 @@ exports.getOne = (Model, popOptions) =>
 
     res.status(200).json({
       status: 'success',
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     let filter = {};
+    if (req.params.venueId) filter = { venue: req.params.venueId };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
@@ -79,8 +74,6 @@ exports.getAll = (Model) =>
     res.status(200).json({
       status: 'success',
       results: doc.length,
-      data: {
-        doc,
-      },
+      data: doc,
     });
   });
